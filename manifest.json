@@ -1,0 +1,27 @@
+{
+    "name": "Window Tile",
+    "version": "1.0.0",
+    "description": "split windows with carousel features",
+    "manifest_version": 3,
+    "author": "Ivan Matthew Ferrer",
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "Window Tile"
+    },
+    "permissions": [
+        "tabs",
+        "background",
+        "alarms",
+        "storage",
+        "system.display",
+        "nativeMessaging",
+        "notifications",
+        "scripting"
+    ],
+    "background": {
+        "service_worker": "scripts/background.js"
+    },
+    "host_permissions": [
+        "https://developer.chrome.com/*"
+    ]
+}

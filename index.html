@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Window Tile</title>
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    
+    <div class="container my-3" style="width: 450px;">
+        <form id="form-win">
+
+            <div class="mb-3" id="layout-radios">
+            </div>
+
+            <div class="mb-3" id="display-checks">
+            </div>
+
+            <div class="row mb-3 row-win">
+                <div class="col-12 mb-3">
+                    <div class="dynamic-input">
+                    </div>
+                    <div class="d-grid">
+                        <button id="btn-add-link" class="btn btn-outline-primary mt-3 btn-block" type="button"><i class="fa-solid fa-plus"></i> Add New Link</button>
+                    </div>
+                </div>
+                <!-- <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.shazam.com/home">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.shazam.com/home">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://open.spotify.com/">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://open.spotify.com/">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.youtube.com/">
+                </div> -->
+                <!-- <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.youtube.com/">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.youtube.com/">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://play.google.com/store">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://play.google.com/store">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://discord.com/">
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://discord.com/">
+                </div> -->
+            </div>
+            <div class="col">
+                <div class="form-check form-switch mt-2">
+                    <input class="form-check-input" type="checkbox" role="switch" id="open-links-startup-switch">
+                    <label class="form-check-label">Run on Chrome Startup</label>
+                </div>
+            </div>
+            <!-- <div class="row mb-3 row-win">
+                <div class="col-12">
+                    <input type="hidden" class="window" value="w7">
+                    <h5>Window 7</h5>
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://discord.com/">
+                </div>
+            </div> -->
+            <!-- <div class="row mb-3 row-win">
+                <div class="col-12">
+                    <input type="hidden" class="window" value="w8">
+                    <h5>Window 5</h5>
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://discord.com/">
+                </div>
+            </div>
+            <div class="row mb-3 row-win">
+                <div class="col-12">
+                    <input type="hidden" class="window" value="w9">
+                    <h5>Window 5</h5>
+                </div>
+                <div class="col-12 mb-3">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://discord.com/">
+                </div>
+            </div> -->
+            <!-- <div class="row mb-3">
+                <div class="col">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.google.com/">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.google.com/">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.google.com/">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.google.com/">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="text" class="link form-control" placeholder="Enter URL" value="https://www.google.com/">
+                </div>
+            </div> -->
+            <div class="row mb-4">
+                <div class="col">
+                    <div class="form-check form-switch mt-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="carousel-switch">
+                        <label class="form-check-label">Carousel Tabs</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <label for="carousel-timer" class="col-3 col-form-label">Timer</label>
+                        <div class="col-7 ms-1">
+                            <input type="number" class="form-control" id="carousel-timer" placeholder="seconds">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row mb-3">
+                <div class="col">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="saveSetting">
+                        <label class="form-check-label" for="saveSetting">Save this settings</label>
+                      </div>
+                </div>
+            </div> -->
+            <div class="row mb-2" id="save-settings-wrapper">
+                <div class="col">
+                    <div class="d-grid">
+                        <button type="button" id="save-settings" class="btn btn-success w-100"><i class="fa-solid fa-check-circle"></i> Save Settings</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2" id="open-links-wrapper">
+                <div class="col">
+                    <button type="button" id="open-links" class="btn btn-primary w-100">Open Links</button>
+                    <button type="button" id="close-windows" class="btn btn-danger w-100 mt-2">Close Other Windows</button>
+                </div>
+            </div>
+            <hr>
+            <div class="row mb-2">
+                <div class="col">
+                    <button type="button" id="import-json" class="btn btn-success w-100"><i class="fa-solid fa-file-arrow-up"></i> Import Settings</button>
+                    <input type="file" id="file-import-json" class="d-none">
+                </div>
+                <div class="col">
+                    <button type="button" id="export-json" class="btn btn-secondary w-100"><i class="fa-solid fa-file-arrow-down"></i> Export Settings</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="snackbar"></div>
+</body>
+<script src="scripts/jquery-3.7.0.min.js"></script>
+<script src="scripts/script.js"></script>
+<script src="scripts/toast.js"></script>
+</html>

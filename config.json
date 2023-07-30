@@ -1,0 +1,48 @@
+{
+    "layouts": [
+        {
+            "id": "1",
+            "name": "Layout 1 (4x2)",
+            "rows": 2,
+            "cols": 4,
+            "img": "./images/4x2.png",
+            "selected": true
+        },
+        {
+            "id": "2",
+            "name": "Layout 2 (2x2)",
+            "rows": 2,
+            "cols": 2,
+            "img": "./images/2x2.png",
+            "selected": false
+        },
+        {
+            "id": "3",
+            "name": "Layout 3 (4x1)",
+            "rows": 1,
+            "cols": 4,
+            "img": "./images/4x1.png",
+            "selected": false
+        }
+    ],
+    "links": [
+        "https://applyonline-dev.azurewebsites.net/",
+        "https://www.google.com/",
+        "https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Web%2Fsites",
+        "https://www.google.com/",
+        "https://integration.emms.net.au/",
+        "https://www.google.com/",
+        "https://www.google.com/",
+        "https://dev-api-lx.emms.net.au/docstore/swagger/index.html",
+        "https://www.google.com/",
+        "https://e-dd.emms.net.au/#/views/RedLimits/Red",
+        "https://www.google.com/",
+        "https://e-dd.emms.net.au/#/views/BlueLimits/Blue",
+        "https://www.google.com/",
+        "https://e-dd.emms.net.au/#/views/SilverPrimeLimits/Silver",
+        "https://e-dd.emms.net.au/#/views/SilverNon-PrimeSMSFLimits/SilverNCSMSF_1"
+    ],
+    "carouselTimer": 4,
+    "carouselStartUp": true,
+    "openLinksOnStartUp": false
+}
