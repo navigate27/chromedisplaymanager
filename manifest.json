@@ -1,7 +1,10 @@
 {
-    "name": "Window Tile",
-    "version": "1.0.0",
+    "name": "Chrome Display Manager Plugin",
+    "version": "0.0.1",
     "description": "split windows with carousel features",
+    "icons": {
+        "128": "images/icons/128.png"
+    },
     "manifest_version": 3,
     "author": "Ivan Matthew Ferrer",
     "action": {

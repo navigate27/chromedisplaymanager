@@ -16,8 +16,7 @@ async function init() {
     // resetStorage()
     var storage = await loadSettings();
     var settings = storage.settings;
-
-    if (settings.openLinksOnStartUp) {
+    if (settings && settings.openLinksOnStartUp) {
         timeoutAutoStart();
     }
 }
