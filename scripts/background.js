@@ -5,6 +5,7 @@ var tabs = [];
 var tabChangeTimer = 3;
 var isTabSwitching = false;
 var openLinksStartup = false;
+var openLinkClicked = false;
 
 const keepAlive = () => setInterval(chrome.runtime.getPlatformInfo, 20e3);
 chrome.runtime.onStartup.addListener(keepAlive);
@@ -16,7 +17,8 @@ async function init() {
     // resetStorage()
     var storage = await loadSettings();
     var settings = storage.settings;
-    if (settings && settings.openLinksOnStartUp) {
+
+    if (settings?.openLinksOnStartUp) {
         timeoutAutoStart();
     }
 }
@@ -89,15 +91,12 @@ async function carouselControl(isCarousel) {
 }
 
 function setCarouselTimer(timer) {
-    console.debug(timer)
     tabChangeTimer = timer;
 }
 
 function setOpenLinksStartup(openLinksStartup) {
     openLinksStartup = openLinksStartup;
 }
-
-//if selected tab == current index tab
 
 function carouselTick() {
     if (isTabSwitching) {
@@ -107,7 +106,6 @@ function carouselTick() {
 
     isTabSwitching = true;
     if (isCarouselOn) {
-        // console.debug('fired')
         setTimeout(() => {
             carouselTickResponse();
         }, tabChangeTimer * 1000);
@@ -150,7 +148,6 @@ async function carouselTickResponse() {
         });
     });
 
-    // console.debug('returned')
     isTabSwitching = false;
     carouselTick();
 }
@@ -194,8 +191,7 @@ function saveSettings(settings) {
             );
         }
 
-        console.debug("settings saved");
-        console.debug(settings);
+        // console.debug("settings saved", settings);
     });
 }
 
@@ -204,7 +200,7 @@ async function autoStart() {
     var settings = storage.settings;
 
     if (!settings) {
-        console.debug("SETUP MODE... waiting settings to be saved!");
+        // console.debug("SETUP MODE... waiting settings to be saved!");
         // await setupMode();
         return;
     }
@@ -218,6 +214,7 @@ async function setupMode() {
 }
 
 async function closeOtherWIndows() {
+    openLinkClicked = false;
     var tabs = await chrome.tabs.query({ active: true, currentWindow: true });
     var windowId = tabs[0].windowId;
 
@@ -234,8 +231,12 @@ async function closeOtherWIndows() {
 function openLinkStart(settings) {
     var windows = generateWindows(settings);
     var output = generateWinSizePos(windows, settings);
+    // console.debug('sizes', output)
     openWindows(output);
+    
+    openLinkClicked = true;
     carouselControl(settings.isCarousel);
+
     console.debug(output);
 }
 
@@ -271,11 +272,13 @@ function generateWinSizePos(windows, settings) {
     var rWindows = [];
     var windowIdx = 0;
     settings.displays.forEach((v, dpIdx) => {
-        var margin = 1; //px
+        var windowWidthLimit = 500;
+        var windowHeightLimit = 0;
         var defaultRows = layout.rows;
         var defaultCols = layout.cols;
         var screenWidth = v.bounds.width;
         var screenHeight = v.bounds.height;
+        // console.debug(screenWidth, screenHeight)
 
         var lefts = v.bounds.left;
         var tops = v.bounds.top;
@@ -302,15 +305,18 @@ function generateWinSizePos(windows, settings) {
                 }
             }
 
+            var modWidth = width + 7;
+            var modHeight = height - 20;
+
             var window = {
-                width: width,
-                height: height,
-                left: lefts - margin,
-                top: tops - margin,
+                width: (modWidth < windowWidthLimit) ? width : modWidth, //2x2
+                height: modHeight, //2x2
+                left: lefts,
+                top: tops,
                 ...windows[windowIdx],
             };
 
-            lefts += width;
+            lefts += window.width;
 
             if (windowIdx < windows.length) {
                 rWindows.push(window);
