@@ -272,12 +272,18 @@ function generateWinSizePos(windows, settings) {
     var rWindows = [];
     var windowIdx = 0;
     settings.displays.forEach((v, dpIdx) => {
+        var widthPctg = 2;
+        var heightPctg = 1;
+
         var windowWidthLimit = 500;
         var windowHeightLimit = 0;
         var defaultRows = layout.rows;
         var defaultCols = layout.cols;
         var screenWidth = v.bounds.width;
         var screenHeight = v.bounds.height;
+        var widthOffset = screenWidth * ( widthPctg / 100 );
+        var heightOffset = screenHeight * ( heightPctg / 100 );
+        // console.debug('widthOffset', widthOffset)
         // console.debug(screenWidth, screenHeight)
 
         var lefts = v.bounds.left;
@@ -305,18 +311,21 @@ function generateWinSizePos(windows, settings) {
                 }
             }
 
-            var modWidth = width + 7;
-            var modHeight = height - 20;
+            var modWidth = parseInt(widthOffset / cols);
+            var modHeight = parseInt(heightOffset / rows);
 
             var window = {
-                width: (modWidth < windowWidthLimit) ? width : modWidth, //2x2
-                height: modHeight, //2x2
+                // width: (modWidth < windowWidthLimit) ? width : modWidth, //2x2
+                // width: width + widthOffset,
+                width: width + modWidth,
+                // height: height + heightOffset,
+                height: height + modHeight,
                 left: lefts,
                 top: tops,
                 ...windows[windowIdx],
             };
 
-            lefts += window.width;
+            lefts += width;
 
             if (windowIdx < windows.length) {
                 rWindows.push(window);
