@@ -100,7 +100,7 @@ function setOpenLinksStartup(openLinksStartup) {
 
 function carouselTick() {
     if (isTabSwitching) {
-        console.debug('cannot run... tab is currently switching..')
+        console.debug("cannot run... tab is currently switching..");
         return;
     }
 
@@ -230,14 +230,100 @@ async function closeOtherWIndows() {
 
 function openLinkStart(settings) {
     var windows = generateWindows(settings);
+    var screenSizes = getScreenSizes(settings);
     var output = generateWinSizePos(windows, settings);
-    // console.debug('sizes', output)
-    openWindows(output);
-    
+    // openWindows(output);
+
+    // chrome.windows.getLastFocused({ populate: true }, function (focuswin) {
+    //     console.debug("focuswin", focuswin);
+
+    //     chrome.windows.create(
+    //         {
+    //             top: focuswin.top,
+    //             left: focuswin.left,
+    //             width: focuswin.width,
+    //             height: focuswin.height,
+    //             focused: false,
+    //             // state: "maximized",
+    //             url: ["https://www.google.com"],
+    //         },
+    //         function (newwin) {
+    //             chrome.windows.update(newwin.id, {
+    //                 left: focuswin.left,
+    //                 top: focuswin.top,
+    //                 width: focuswin.width,
+    //                 height: focuswin.height,
+    //             });
+    //         }
+    //     );
+    // });
+
     openLinkClicked = true;
     carouselControl(settings.isCarousel);
 
-    console.debug(output);
+    // console.debug(output);
+}
+
+function getScreenSizes(settings) {
+    var leftOffset;
+    var newScreenSizes = [];
+    console.debug(settings);
+    settings.displays.forEach(async (v, dpIdx) => {
+        leftOffset = v.bounds.left + 10;
+        var availWinSize = await getAvailWinSize(leftOffset);
+        newScreenSizes = [...newScreenSizes, availWinSize];
+        console.debug(newScreenSizes);
+    });
+
+    console.debug(newScreenSizes);
+}
+
+// function getAllAvailWinSize(){
+//     return new Promise(function (resolve, reject) {
+//         try {
+//             if (chrome.runtime.lastError) {
+//                 reject(chrome.runtime.lastError);
+//             } else {
+//                 resolve();
+//             }
+//         } catch (error) {
+            
+//         }
+//     });
+// }
+
+function getAvailWinSize(leftOffset) {
+    return new Promise(function (resolve, reject) {
+        try {
+            chrome.windows.create(
+                {
+                    left: leftOffset,
+                    focused: false,
+                    url: ["https://www.google.com"],
+                },
+                function (newwin) {
+                    chrome.windows.update(
+                        newwin.id,
+                        {
+                            state: "maximized",
+                        },
+                        function (win) {
+                            if (chrome.runtime.lastError) {
+                                reject(chrome.runtime.lastError);
+                            } else {
+                                resolve({
+                                    width: win.width,
+                                    height: win.height,
+                                });
+                            }
+                        }
+                    );
+                }
+            );
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
 
 function generateWindows(settings) {
@@ -245,8 +331,7 @@ function generateWindows(settings) {
     var links = settings.links;
     var layout = settings.layouts.find((x) => x.selected == true);
 
-    var windowLimit =
-        layout.rows * layout.cols * settings.displays.length;
+    var windowLimit = layout.rows * layout.cols * settings.displays.length;
     var tabsPerWindow = Math.ceil(links.length / windowLimit);
     var windowIdx = 1;
     var tempLinks = [];
@@ -272,22 +357,14 @@ function generateWinSizePos(windows, settings) {
     var rWindows = [];
     var windowIdx = 0;
     settings.displays.forEach((v, dpIdx) => {
-        var widthPctg = 2;
-        var heightPctg = 1;
-
-        var windowWidthLimit = 500;
-        var windowHeightLimit = 0;
         var defaultRows = layout.rows;
         var defaultCols = layout.cols;
         var screenWidth = v.bounds.width;
         var screenHeight = v.bounds.height;
-        var widthOffset = screenWidth * ( widthPctg / 100 );
-        var heightOffset = screenHeight * ( heightPctg / 100 );
-        // console.debug('widthOffset', widthOffset)
-        // console.debug(screenWidth, screenHeight)
 
         var lefts = v.bounds.left;
         var tops = v.bounds.top;
+        // console.debug("tops",tops);
 
         rows = defaultRows;
         cols = defaultCols;
@@ -300,26 +377,22 @@ function generateWinSizePos(windows, settings) {
             }
 
             var width = parseInt(screenWidth / cols);
-            var height = parseInt(screenHeight / rows);
+            // var height = parseInt(screenHeight / rows);
+            var height = 704;
 
             if (i % cols == 0) {
                 //if 1st item in a row
                 lefts = v.bounds.left;
 
                 if (i != 0) {
+                    // height += 38;
                     tops += height;
                 }
             }
 
-            var modWidth = parseInt(widthOffset / cols);
-            var modHeight = parseInt(heightOffset / rows);
-
             var window = {
-                // width: (modWidth < windowWidthLimit) ? width : modWidth, //2x2
-                // width: width + widthOffset,
-                width: width + modWidth,
-                // height: height + heightOffset,
-                height: height + modHeight,
+                width: width,
+                height: height,
                 left: lefts,
                 top: tops,
                 ...windows[windowIdx],
@@ -330,6 +403,7 @@ function generateWinSizePos(windows, settings) {
             if (windowIdx < windows.length) {
                 rWindows.push(window);
             }
+
             windowIdx += 1;
             return true;
         });
@@ -339,15 +413,31 @@ function generateWinSizePos(windows, settings) {
 }
 
 function openWindows(windows) {
+    // chrome.windows.create({
+    //     state: "maximized",
+    //     url: ["https://www.google.com"],
+    // }, function(parent) {
+
+    // });
     windows.forEach((v, i) => {
-        chrome.windows.create({
-            top: v.top,
-            left: v.left,
-            width: v.width,
-            height: v.height,
-            focused: false,
-            url: v.links,
-        });
+        chrome.windows.create(
+            {
+                top: v.top,
+                left: v.left,
+                width: v.width,
+                height: v.height,
+                focused: false,
+                url: v.links,
+            },
+            function (win) {
+                chrome.windows.update(win.id, {
+                    left: win.left - 8,
+                    top: win.top,
+                    width: win.width + 16,
+                    height: win.height + 8,
+                });
+            }
+        );
     });
 }
 
